@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carrito de Compras con JS Puro</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { margin-bottom: 10px; }
+    #carrito { margin-top: 15px; padding: 0; list-style: none; }
+    #carrito li {
+      background: #f2f2f2;
+      margin: 5px 0;
+      padding: 8px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .precio { color: green; margin-left: 10px; }
+    button {
+      margin-left: 10px;
+      border: none;
+      background: crimson;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 3px 8px;
+    }
+    #total { font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h2>Carrito de Compras</h2>
+
+  <select id="selector">
+    <option value="">-- Selecciona un producto --</option>
+    <option value="Manzana|1.5">🍎 Manzana - $1.50</option>
+    <option value="Banano|1.0">🍌 Banano - $1.00</option>
+    <option value="Naranja|2.0">🍊 Naranja - $2.00</option>
+  </select>
+
+  <button id="agregar">Agregar</button>
+
+  <ul id="carrito"></ul>
+  <div id="total">Total: $0.00</div>
+
+  <script>
+    const selector = document.getElementById("selector");
+    const agregarBtn = document.getElementById("agregar");
+    const carritoUl = document.getElementById("carrito");
+    const totalDiv = document.getElementById("total");
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    // Función para renderizar el carrito
+    function renderCarrito() {
+      carritoUl.innerHTML = "";
+      let total = 0;
+
+      carrito.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.nombre} <span class="precio">$${item.precio.toFixed(2)}</span>`;
+
+        const eliminarBtn = document.createElement("button");
+        eliminarBtn.textContent = "X";
+        eliminarBtn.addEventListener("click", () => {
+          carrito.splice(index, 1);
+          guardarCarrito();
+          renderCarrito();
+        });
+
+        li.appendChild(eliminarBtn);
+        carritoUl.appendChild(li);
+
+        total += item.precio;
+      });
+
+      totalDiv.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    // Guardar en localStorage
+    function guardarCarrito() {
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+    }
+
+    // Evento para agregar producto
+    agregarBtn.addEventListener("click", () => {
+      const valor = selector.value;
+      if (valor) {
+        const [nombre, precio] = valor.split("|");
+        carrito.push({ nombre, precio: parseFloat(precio) });
+        guardarCarrito();
+        renderCarrito();
+      }
+    });
+
+    // Renderizar al cargar
+    renderCarrito();
+  </script>
+
+</body>
+</html>
