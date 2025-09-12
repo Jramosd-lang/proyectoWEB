@@ -1,103 +1,65 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Carrito de Compras con JS Puro</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h2 { margin-bottom: 10px; }
-    #carrito { margin-top: 15px; padding: 0; list-style: none; }
-    #carrito li {
-      background: #f2f2f2;
-      margin: 5px 0;
-      padding: 8px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .precio { color: green; margin-left: 10px; }
-    button {
-      margin-left: 10px;
-      border: none;
-      background: crimson;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      padding: 3px 8px;
-    }
-    #total { font-weight: bold; margin-top: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/app.css">
+    <title>MultiGestion</title>
 </head>
-<body>
-
-  <h2>Carrito de Compras</h2>
-
-  <select id="selector">
-    <option value="">-- Selecciona un producto --</option>
-    <option value="Manzana|1.5">🍎 Manzana - $1.50</option>
-    <option value="Banano|1.0">🍌 Banano - $1.00</option>
-    <option value="Naranja|2.0">🍊 Naranja - $2.00</option>
-  </select>
-
-  <button id="agregar">Agregar</button>
-
-  <ul id="carrito"></ul>
-  <div id="total">Total: $0.00</div>
-
-  <script>
-    const selector = document.getElementById("selector");
-    const agregarBtn = document.getElementById("agregar");
-    const carritoUl = document.getElementById("carrito");
-    const totalDiv = document.getElementById("total");
-
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    // Función para renderizar el carrito
-    function renderCarrito() {
-      carritoUl.innerHTML = "";
-      let total = 0;
-
-      carrito.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.innerHTML = `${item.nombre} <span class="precio">$${item.precio.toFixed(2)}</span>`;
-
-        const eliminarBtn = document.createElement("button");
-        eliminarBtn.textContent = "X";
-        eliminarBtn.addEventListener("click", () => {
-          carrito.splice(index, 1);
-          guardarCarrito();
-          renderCarrito();
-        });
-
-        li.appendChild(eliminarBtn);
-        carritoUl.appendChild(li);
-
-        total += item.precio;
-      });
-
-      totalDiv.textContent = `Total: $${total.toFixed(2)}`;
-    }
-
-    // Guardar en localStorage
-    function guardarCarrito() {
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-    }
-
-    // Evento para agregar producto
-    agregarBtn.addEventListener("click", () => {
-      const valor = selector.value;
-      if (valor) {
-        const [nombre, precio] = valor.split("|");
-        carrito.push({ nombre, precio: parseFloat(precio) });
-        guardarCarrito();
-        renderCarrito();
-      }
-    });
-
-    // Renderizar al cargar
-    renderCarrito();
-  </script>
-
+<body class="font-bold font-sans bg-[#232326] ">
+    <div>
+        <header class="flex h-16 fixed z-10 w-screen justify-between items-center px-10 py-4 bg-[#1F1E23] border-b border-[#3B3A3F]">
+            <div class=" items-center flex gap-5 text-[#ffffff50] select-none 
+            px-3 py-2 rounded-lg cursor-pointer">
+                <div class="flex hover:bg-[#00000050] p-3 rounded-xl animation-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-slash2-icon lucide-circle-slash-2"><path d="M22 2 2 22"/><circle cx="12" cy="12" r="10"/></svg>
+                </div>
+                <p class="">MultiGestion</p>
+            </div>
+            <div class="w-[20%] max-lg:hidden font-semibold">
+                <ul class="flex w-full justify-center gap-12 text-white">
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4"><a href="">Reportes</a></li>
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4"><a href="/html/prueba.html">Facturaciones</a></li>
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Proveedores</li>
+                </ul>
+            </div>
+            <div class="flex gap-5 font-normal text-[#676B6E] items-center">
+                <label for="search">Search</label>
+                <div class="flex">
+                    <input type="text" name="search" id="search"
+                    class="rounded-l-xl px-3 text-white bg-[#27272B] w-70 border-l border-t border-b"/>
+                    <div class="flex h-8 items-center justify-center w-7 bg-[#27272B] border-r border-t border-b rounded-r-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-icon lucide-search"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="w-full h-screen flex flex-col">
+            <div class="w-full h-fit mt-20 px-10 py-2 text-white border-b border-[#ffffff20]">
+              <h2>Facturaciones</h2>
+            </div>
+            <div class="flex-1 w-4/6 h-full bg-black p-10">
+                <table border="1" class="w-full h-full bg-white text-center">
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
+                  </tr>
+                  <tr>
+                    <td>Juan</td>
+                    <td>25</td>
+                    <td>Bogotá</td>
+                  </tr>
+                  <tr>
+                    <td>Ana</td>
+                    <td>30</td>
+                    <td>Medellín</td>
+                  </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/js/app.js"></script>
 </body>
 </html>

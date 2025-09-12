@@ -1,3 +1,4 @@
+
 const urlAPI = "https://fakestoreapi.com/products/";
 
 // Renderizar productos desde la API
@@ -26,17 +27,57 @@ fetch(urlAPI)
         productosContainer.appendChild(div);
       });
     }
+});
+
+
+  
+  const productList = document.querySelector(".product-list");
+  const totalcost_p = document.getElementById("total-price");
+  const product_li = document.getElementsByClassName("product");
+
+  const totalcost = () => {
+    const totalcost_p = document.getElementById("total-price");
+    if (!totalcost_p) return;
+
+    const product_li = document.querySelectorAll(".product-li"); // productos agregados dinámicamente
+    let total_cost = 0;
+
+    product_li.forEach(producto => {
+      // Busca el span con el precio
+      const priceEl = producto.querySelector("span");
+      // Busca el input con la cantidad
+      const quantityEl = producto.querySelector("input.amount-product");
+
+      // Extrae el número del precio
+      const price = priceEl ? Number(priceEl.textContent.replace(/[^\d.-]/g, '')) : 0;
+      // Extrae la cantidad
+      const quantity = quantityEl ? Number(quantityEl.value) : 1;
+
+      total_cost += price * quantity;
+    });
+
+    totalcost_p.textContent = `$${total_cost.toFixed(2)}`;
+  };
+
+  // Actualiza el total cada vez que cambie la cantidad
+  document.addEventListener("input", function(e) {
+    if (e.target.classList.contains("amount-product")) {
+      totalcost();
+    }
   });
 
 
+
+  
+  const productosContainer = document.querySelector(".container-products");
 // Espera a que los productos se hayan renderizado antes de asignar los eventos
-const productosContainer = document.querySelector(".container-products");
-const productList = document.querySelector(".product-list");
 
 if (productosContainer && productList) {
   productosContainer.addEventListener("click", function (e) {
     const product = e.target.closest(".product");
     if (product) {
+
+
       const name = product.querySelector("p").textContent;
       const price = product.querySelector("span").textContent;
       const url_image = product.querySelector("img").src;
@@ -46,9 +87,10 @@ if (productosContainer && productList) {
       if (existingLi) {
         const input = existingLi.querySelector("input.amount-product");
         input.value = parseInt(input.value) + 1;
+        totalcost();
         return;
       }
-
+      
       // Crear elementos del li
       
       const container_image = document.createElement("div");
@@ -56,25 +98,34 @@ if (productosContainer && productList) {
       container_image.classList = "container-image-product-li";
       image.classList = "image-product-li";
       image.src = url_image;
-
-
-      container_image.appendChild(image); 
-
       
-
+      
+      container_image.appendChild(image); 
+      
+      
+      
       const container_info = document.createElement("div");
       container_info.classList = "flex flex-col gap-1";
-
+      
       const li = document.createElement("li");
       li.className = "product-li";
 
       const name_p = document.createElement("p");
       name_p.className = "name-product-li";
       name_p.textContent = name;
-
+      
       const input_container = document.createElement("div");
       input_container.className = "container-amount-product";
       const btn_less = document.createElement("button");
+      btn_less.addEventListener("click",() => {
+        if(input_quantity.value != 1){
+        input_quantity.value = input_quantity.value - 1;
+        totalcost();
+        }else{
+          li.remove();
+          totalcost();
+        }
+      });
       btn_less.className = "btn-less";
       btn_less.textContent = "-";
       const input_quantity = document.createElement("input");
@@ -84,23 +135,30 @@ if (productosContainer && productList) {
       input_quantity.value = 1;
       input_quantity.className = "amount-product";
       const btn_add = document.createElement("button");
+      btn_add.addEventListener("click",() => {
+      if(input_quantity.value != 99){
+        input_quantity.value = ++input_quantity.value;
+        }
+        totalcost();
+      });
       btn_add.className = "btn-add";
       btn_add.textContent = "+";
       input_container.appendChild(btn_less);
       input_container.appendChild(input_quantity);
       input_container.appendChild(btn_add);
-
+      
       const price_span = document.createElement("span");
       price_span.textContent = price;
-
+      
       container_info.appendChild(name_p);
       container_info.appendChild(price_span);
       li.id = `producto-${id_producto}`;
       li.appendChild(container_image);
       li.appendChild(container_info);
       li.appendChild(input_container);
-
+      
       productList.appendChild(li);
+      totalcost();
     }
   });
 }
@@ -112,5 +170,6 @@ if (btnDelete) {
   btnDelete.addEventListener("click", () => {
     const div = document.querySelector(".product-list");
     if (div) div.replaceChildren();
+    totalcost();
   });
 }
