@@ -1,127 +1,116 @@
+const urlAPI = "https://fakestoreapi.com/products/";
 
-// Delegación de eventos para productos generados dinámicamente
-const productosContainer = document.querySelector('.container-products');
-if (productosContainer) {
-	productosContainer.addEventListener('click', function(e) {
-		const product = e.target.closest('.product');
-		if (product) {
-			const name = product.querySelector('p').textContent;
-			const li = document.createElement('li');
-			const divCantidad = document.createElement("div");
-			const btnLess = document.createElement("button");
-			const inputAmount = document.createElement("input");
-			const btnAdd = document.createElement("button");
-			// Añadir el nombre del producto
-			btnLess.classList.add("btn-less");
-			inputAmount.classList.add("product-li");		
-			btnAdd.classList.add("btn-add");
-			divCantidad.classList.add("flex");
-			const span = document.createElement('span');
-			span.textContent = name;
-			divCantidad.appendChild(btnLess);
-			divCantidad.appendChild(inputAmount);
-			divCantidad.appendChild(btnAdd);
-			li.appendChild(span);
-			li.appendChild(divCantidad);
-			// Estructura visual del li según el componente proporcionado
-			li.className = 'flex gap-3 justify-between hover:bg-[#27272B] bg-[#00000020] py-2 px-5 rounded-md animation-all duration-300 cursor-pointer items-center';
-			productList.appendChild(li);
-		}
-	});
+// Renderizar productos desde la API
+
+fetch(urlAPI)
+  .then((res) => res.json())
+  .then((productos) => {
+    const productosContainer = document.querySelector(".container-products");
+    if (productosContainer) {
+      productos.forEach((producto) => {
+        const div = document.createElement("div");
+        div.id = `product-${producto.id}`;
+        const url_image = producto.image ? producto.image : "../img/product.svg";
+        div.className = "product";
+        div.innerHTML = `
+          <div class='w-full h-[70%] p-5 bg-[#313134] overflow-hidden flex justify-center items-center'>
+            <img 
+            class="w-30 h-40  transform transition-transform duration-300 hover:scale-110"
+            ${url_image!= null ? `src="${url_image}"`: `src="../img/product.svg"` } />
+          </div>
+          <div class='flex flex-col bg-[#1F1E23] w-full h-[30%] gap-1 text-left p-4'>
+            <p class='text-[#ffffff] truncate overflow-hidden text-ellipsis max-w-[200px]'>${producto.title}</p>
+            <span class='text-[#54B063]'>$${producto.price}</span>
+          </div>
+        `;
+        productosContainer.appendChild(div);
+      });
+    }
+  });
+
+
+// Espera a que los productos se hayan renderizado antes de asignar los eventos
+const productosContainer = document.querySelector(".container-products");
+const productList = document.querySelector(".product-list");
+
+if (productosContainer && productList) {
+  productosContainer.addEventListener("click", function (e) {
+    const product = e.target.closest(".product");
+    if (product) {
+      const name = product.querySelector("p").textContent;
+      const price = product.querySelector("span").textContent;
+      const url_image = product.querySelector("img").src;
+      const id_producto = product.id;
+
+      const existingLi = productList.querySelector(`#producto-${id_producto}`);
+      if (existingLi) {
+        const input = existingLi.querySelector("input.amount-product");
+        input.value = parseInt(input.value) + 1;
+        return;
+      }
+
+      // Crear elementos del li
+      
+      const container_image = document.createElement("div");
+      const image = document.createElement("img");
+      container_image.classList = "container-image-product-li";
+      image.classList = "image-product-li";
+      image.src = url_image;
+
+
+      container_image.appendChild(image); 
+
+      
+
+      const container_info = document.createElement("div");
+      container_info.classList = "flex flex-col gap-1";
+
+      const li = document.createElement("li");
+      li.className = "product-li";
+
+      const name_p = document.createElement("p");
+      name_p.className = "name-product-li";
+      name_p.textContent = name;
+
+      const input_container = document.createElement("div");
+      input_container.className = "container-amount-product";
+      const btn_less = document.createElement("button");
+      btn_less.className = "btn-less";
+      btn_less.textContent = "-";
+      const input_quantity = document.createElement("input");
+      input_quantity.type = "number";
+      input_quantity.min = 1;
+      input_quantity.max = 99;
+      input_quantity.value = 1;
+      input_quantity.className = "amount-product";
+      const btn_add = document.createElement("button");
+      btn_add.className = "btn-add";
+      btn_add.textContent = "+";
+      input_container.appendChild(btn_less);
+      input_container.appendChild(input_quantity);
+      input_container.appendChild(btn_add);
+
+      const price_span = document.createElement("span");
+      price_span.textContent = price;
+
+      container_info.appendChild(name_p);
+      container_info.appendChild(price_span);
+      li.id = `producto-${id_producto}`;
+      li.appendChild(container_image);
+      li.appendChild(container_info);
+      li.appendChild(input_container);
+
+      productList.appendChild(li);
+    }
+  });
 }
 
 
-
-
-// esta funcion se encarga de renderizar los productos en el contenedor
-fetch('https://fakestoreapi.com/products/')
-.then(res => res.json())
-.then(productos => {
-    const productosContainer = document.querySelector('.container-products');
-    if (productosContainer) {
-    	productos.forEach(producto => {
-        const div = document.createElement('div');
-        div.className = "product flex flex-col hover:scale-[1.02] transition-transform duration-300 rounded-xl w-54 h-72 bg-[#00000030] border-b border-[#3B3A3F] border-[1px] overflow-hidden";
-        div.innerHTML = `
-    		<div class='w-full h-[70%] p-5 bg-[#1F1E23] flex justify-center items-center'>
-            	<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' viewBox='0 0 24 24' fill='none' stroke='#656567' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m2 2 20 20'/><path d='M8.35 2.69A10 10 0 0 1 21.3 15.65'/><path d='M19.08 19.08A10 10 0 1 1 4.92 4.92'/></svg>
-        	</div>
-        <div class='flex flex-col w-52 h-[30%] gap-1 text-left p-4'>
-            <p class='text-[#ffffff] text-overflow: ellipsis w-max-20 overflow-hidden'>${producto.title}</p>
-            <span class='text-[#54B063]'>$${producto.price}</span>
-        </div>
-        `;
-        productosContainer.appendChild(div);
-    });
-    }
-});
-
-const header = document.querySelector("header");
-window.addEventListener("scroll", () => {
-	if (window.scrollY > 0) {
-		header.style.backgroundColor = "rgba(31,30,35,0.5)";
-		header.classList.add("backdrop-blur-sm");
-	} else {
-		header.style.backgroundColor = "#1F1E23";
-		header.classList.remove("backdrop-blur-sm");
-	} 
-});
-
-const productList = document.querySelector(".product-list");
-const products = document.querySelectorAll(".product");
-
-products.forEach(product => {
-	product.addEventListener("click", () => {
-		console.log("prueba");
-		const name = product.querySelector("p").textContent;
-		const li = document.createElement("li");
-		// Añadir el nombre del producto
-		const span = document.createElement("span");
-		span.textContent = name;
-		li.appendChild(span);
-	// Estructura visual del li según el componente proporcionado
-	li.className = "product-li";
-	// span nombre
-	const spanName = document.createElement("span");
-	spanName.className = "mr-auto w-fit";
-	spanName.textContent = name;
-	// div cantidad
-	const divCantidad = document.createElement("div");
-	divCantidad.className = "container-amount-product";
-	// botón -
-	const btnMenos = document.createElement("button");
-	btnMenos.className = "btn-less";
-	btnMenos.innerHTML = "<span>-</span>";
-	// input cantidad
-	const inputCantidad = document.createElement("input");
-	inputCantidad.type = "number";
-	inputCantidad.className = "amount-product";
-	inputCantidad.value = 1;
-	inputCantidad.min = 1;
-	inputCantidad.max = 99;
-	// botón +
-	const btnMas = document.createElement("button");
-	btnMas.className = "btn-add";
-	btnMas.innerHTML = "<span>+</span>";
-	// span precio
-	const spanPrecio = document.createElement("span");
-	spanPrecio.className = "text-[#e0e0e0] w-12";
-	spanPrecio.textContent = product.querySelector("span").textContent;
-	// armar hijos
-	divCantidad.appendChild(btnMenos);
-	divCantidad.appendChild(inputCantidad);
-	divCantidad.appendChild(btnMas);
-	li.innerHTML = "";
-	li.appendChild(spanName);
-	li.appendChild(divCantidad);
-	li.appendChild(spanPrecio);
-	productList.appendChild(li);
-	});
-});
-
+// Borrar productos del carrito
 const btnDelete = document.querySelector(".btn-delete-all");
-
-btnDelete.addEventListener("click",() => {
-	const div = document.querySelector(".product-list");
-	div.replaceChildren();
-})
+if (btnDelete) {
+  btnDelete.addEventListener("click", () => {
+    const div = document.querySelector(".product-list");
+    if (div) div.replaceChildren();
+  });
+}

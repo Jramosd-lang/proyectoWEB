@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../css/app.css">
     <title>MultiGestion</title>
 </head>
-<body class="font-bold font-sans bg-[#19191C] ">
+<body class="font-bold font-sans bg-[#232326] ">
     <div>
         <header class="flex h-16 fixed z-10 w-screen justify-between items-center px-10 py-4 bg-[#1F1E23] border-b border-[#3B3A3F]">
             <div class=" items-center flex gap-5 text-[#ffffff50] select-none 
@@ -18,10 +18,10 @@
                 <p class="">MultiGestion</p>
             </div>
             <div class="w-[20%] max-lg:hidden font-semibold">
-                <ul class="flex w-full justify-center gap-12 text-[#676B6E]">
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Home</li>
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">About</li>
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Contact</li>
+                <ul class="flex w-full justify-center gap-12 text-white">
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Reportes</li>
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Facturaciones</li>
+                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Proveedores</li>
                 </ul>
             </div>
             <div class="flex gap-5 font-normal text-[#676B6E] items-center">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 
-                <aside class="flex flex-col bg-[#1F1E23] w-[30%] fixed top-24 bottom-12 right-5 text-white border border-[#3B3A3F] rounded-xl p-5 gap-8">
+                <aside class="flex flex-col bg-[#1F1E23] w-[29%] fixed top-24 bottom-12 right-5 text-white border border-[#3B3A3F] rounded-xl p-5 gap-8">
                     <div class="flex w-full py-2 gap-3 items-center">
                         
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt-text-icon lucide-receipt-text"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
@@ -61,7 +61,7 @@
                         <h2 class=" font-semibold text-2xl">Facturar</h2>
 
                     </div>
-                    <ul class="flex flex-col p-2 gap-3 rounded-xl h-full product-list">
+                    <ul class="flex flex-col p-2 gap-3 font-normal rounded-xl overflow-auto h-full product-list">
                         <!-- aqui van los productos elegidos, se cargan dinamicamente con el app.js -->
                     </ul>
                     <div class="flex flex-col gap-5">
@@ -74,7 +74,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                             </button>
                             <button class="w-full bg-[#54B063] hover:bg-[#54B063e0] transition-all duration-300 
-                            text-black font-bold py-3 rounded-xl">
+                            text-black font-bold py-3 rounded-xl text-[#1F1E23]">
                             Generar Factura
                             </button>
                         </div>
