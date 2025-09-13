@@ -1,5 +1,69 @@
-
 const urlAPI = "https://fakestoreapi.com/products/";
+
+function comprobarConexionAPI(url) {
+  fetch(url)
+    .then(response => {
+      if (response.ok) {
+        console.log("Conexión exitosa con el API.");
+        return true;
+      } else {
+        console.error("Error en la conexión con el API:", response.status);
+        return false;
+      }
+    })
+    .catch(error => {
+      console.error("No se pudo conectar con el API:", error);
+      return false;
+    });
+}
+// Devuelve la lista de facturas guardadas en localStorage
+
+
+function obtenerFacturas() {
+  const facturas = localStorage.getItem('facturas');
+  if (!facturas) return [];
+  return JSON.parse(facturas);
+}
+// Guardar factura localmente al hacer click en el botón facturar
+const btnFacturar = document.querySelector('.btn-facturar');
+if (btnFacturar) {
+  btnFacturar.addEventListener('click', () => {
+    // Genera un id único para la factura
+    const id = Date.now().toString() + Math.floor(Math.random() * 10000).toString();
+    const productLis = document.querySelectorAll('.product-li');
+    const productosFactura = [];
+    productLis.forEach(li => {
+      const nombre = li.querySelector('.name-product-li')?.textContent || '';
+      const precio = li.querySelector('span')?.textContent || '';
+      const cantidad = li.querySelector('input.amount-product')?.value || '1';
+      productosFactura.push({ nombre, precio, cantidad });
+    });
+    const fechaHora = new Date().toLocaleString();
+    // Calcular el total
+    let total = 0;
+    productosFactura.forEach(p => {
+      const precioNum = Number(p.precio.replace(/[^\d.-]/g, ''));
+      total += precioNum * Number(p.cantidad);
+    });
+    const factura = {
+      id,
+      productos: productosFactura,
+      fecha: fechaHora,
+      total: total.toFixed(2)
+    };
+    let facturas = JSON.parse(localStorage.getItem('facturas') || '[]');
+    facturas.push(factura);
+    localStorage.setItem('facturas', JSON.stringify(facturas));
+    alert('Factura guardada localmente.');
+    handdlerDelete();
+  });
+}
+
+
+
+
+// Ejemplo de uso:
+comprobarConexionAPI("https://fakestoreapi.com/products/");
 
 // Renderizar productos desde la API
 
@@ -166,10 +230,18 @@ if (productosContainer && productList) {
 
 // Borrar productos del carrito
 const btnDelete = document.querySelector(".btn-delete-all");
-if (btnDelete) {
-  btnDelete.addEventListener("click", () => {
-    const div = document.querySelector(".product-list");
+
+
+
+const handdlerDelete = () =>{
+  const div = document.querySelector(".product-list");
     if (div) div.replaceChildren();
     totalcost();
-  });
 }
+
+
+
+
+
+
+// const urlAPI = "https://fakestoreapi.com/products/";

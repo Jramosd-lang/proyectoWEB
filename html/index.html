@@ -9,23 +9,23 @@
 </head>
 <body class="font-bold font-sans bg-[#232326] ">
     <div>
-        <header class="flex h-16 fixed z-10 w-screen justify-between items-center px-10 py-4 bg-[#1F1E23] border-b border-[#3B3A3F]">
+        <header class="flex h-16 fixed z-10 w-[100%] justify-between items-center px-10 py-4 bg-[#1F1E23] border-b border-[#3B3A3F]">
             <div class=" items-center flex gap-5 text-[#ffffff50] select-none 
             px-3 py-2 rounded-lg cursor-pointer">
                 <div class="flex hover:bg-[#00000050] p-3 rounded-xl animation-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-slash2-icon lucide-circle-slash-2"><path d="M22 2 2 22"/><circle cx="12" cy="12" r="10"/></svg>
                 </div>
-                <p class="">MultiGestion</p>
+                <p class="max-lg:hidden">MultiGestion</p>
             </div>
             <div class="w-[20%] max-lg:hidden font-semibold">
                 <ul class="flex w-full justify-center gap-12 text-white">
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4"><a href="">Reportes</a></li>
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4"><a href="/html/prueba.html">Facturaciones</a></li>
-                    <li class="rounded-xl hover:bg-[#27272B] py-1 cursor-pointer animation-all duration-300 hover:px-10 text-center px-4">Proveedores</li>
+                    <li class="option-header"><a href="">Reportes</a></li>
+                    <li class="option-header"><a href="/html/facturas.html">Facturaciones</a></li>
+                    <li class="option-header"><a href="">Proveedores</a></li>
                 </ul>
             </div>
             <div class="flex gap-5 font-normal text-[#676B6E] items-center">
-                <label for="search">Search</label>
+                <label class="label-input-header" for="search">Search</label>
                 <div class="flex">
                     <input type="text" name="search" id="search"
                     class="rounded-l-xl px-3 text-white bg-[#27272B] w-70 border-l border-t border-b"/>
@@ -36,7 +36,7 @@
             </div>
         </header>
         <div class="w-full h-full flex flex-col">
-            <div class="flex w-full ">
+            <div class="flex w-full">
                 <div class="flex flex-col w-[70%] py-20 gap-10 px-10">
                     <div class="flex w-full gap-5">
                         <div class="flex gap-2 px-4 font-semibold py-2 rounded-xl text-white bg-[#1F1E23] border border-[#3B3A3F]">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 
-                <aside class="flex flex-col bg-[#1F1E23] w-[29%] fixed top-24 bottom-12 right-5 text-white border border-[#3B3A3F] rounded-xl p-5 gap-8">
+                <aside class="aside flex flex-col bg-[#1F1E23] w-[30%] sticky h-[80vh] top-32 bottom-12 right-5 text-white border border-[#3B3A3F] rounded-xl p-5 gap-8">
                     <div class="flex w-full py-2 gap-3 items-center">
                         
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt-text-icon lucide-receipt-text"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M13 16H8"/></svg>
@@ -70,10 +70,10 @@
                             <span id="total-price" class="total-price">$0.0</span>
                         </div>
                         <div class="flex gap-5">
-                            <button class="btn-delete-all flex justify-center items-center bg-white text-black w-12 py-3 rounded-xl px-2">
+                            <button onclick="handdlerDelete()" class="btn-delete-all flex justify-center items-center bg-white text-black w-12 py-3 rounded-xl px-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                             </button>
-                            <button class="w-full bg-[#54B063] hover:bg-[#54B063e0] transition-all duration-300 
+                            <button class="btn-facturar w-full bg-[#54B063] hover:bg-[#54B063e0] transition-all duration-300 
                             text-black font-bold py-3 rounded-xl text-[#1F1E23]">
                             Generar Factura
                             </button>
